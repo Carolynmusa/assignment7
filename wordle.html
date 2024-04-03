@@ -50,26 +50,47 @@
 <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
 <script>
-function WordleBoard() {
-  return React.createElement('div', null,
-    React.createElement('h2', null, 'Wordle Board'),
-    React.createElement('div', null, '-----'),
-    React.createElement('div', null, '-----'),
-    React.createElement('div', null, '-----'),
-    React.createElement('div', null, '-----'),
-    React.createElement('div', null, '-----'),
-    React.createElement('div', null, '-----')
-  );
+// Define the Square component
+function Square(props) {
+  return React.createElement('div', { className: 'square', style: { backgroundColor: props.color } }, props.face);
 }
 
+// Define the WordleBoard component
+function WordleBoard() {
+  // Define squares for the board
+  const squares = [
+    new Square(''),
+    new Square(''),
+    new Square(''),
+    new Square(''),
+    new Square(''),
+    // Add more squares for the remaining cells...
+  ];
+
+  // Create rows for the board
+  const rows = [];
+  for (let i = 0; i < 6; i++) {
+    const row = [];
+    for (let j = 0; j < 5; j++) {
+      row.push(squares[i * 5 + j]);
+    }
+    rows.push(React.createElement('div', { className: 'row', key: i }, row));
+  }
+
+  return React.createElement('div', { className: 'board' },
+    rows
+  );
+}
 function OnScreenKeyboard() {
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+  const letterButtons = alphabet.map(letter =>
+    React.createElement('button', { key: letter }, letter)
+  );
+
   return React.createElement('div', null,
     React.createElement('h2', null, 'On-Screen Keyboard'),
-    React.createElement('button', null, 'A'),
-    React.createElement('button', null, 'B'),
-    React.createElement('button', null, 'C'),
-    React.createElement('button', null, 'D'),
-    React.createElement('button', null, 'E'),
+    letterButtons
   );
 }
 
@@ -109,3 +130,4 @@ ReactDOM.render(wordleApp, document.getElementById('root'));
 </script>
 </body>
 </html>
+
