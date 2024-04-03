@@ -84,16 +84,23 @@ function WordleBoard() {
 function OnScreenKeyboard() {
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
-  const letterButtons = alphabet.map(letter =>
+  const firstLine = alphabet.slice(0, 13);
+  const secondLine = alphabet.slice(13, 26);
+
+  const firstLineButtons = firstLine.map(letter =>
+    React.createElement('button', { key: letter }, letter)
+  );
+
+  const secondLineButtons = secondLine.map(letter =>
     React.createElement('button', { key: letter }, letter)
   );
 
   return React.createElement('div', null,
     React.createElement('h2', null, 'On-Screen Keyboard'),
-    letterButtons
+    React.createElement('div', null, ...firstLineButtons), 
+    React.createElement('div', null, ...secondLineButtons) 
   );
 }
-
 function Results() {
   const guesses = ['might', 'flood', 'stray'];
   const answer = 'moody';
