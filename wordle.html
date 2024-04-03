@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wordle Game</title>
+  <style>
+    body {
+      background: linear-gradient(45deg, #4b4fe2 33%, #0ec38b);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .square {
+      width: 120px;
+      height: 120px;
+      margin: 5px;
+      border: 1px solid #333;
+      display: inline-block;
+      vertical-align: top;
+      font-size: 50px;
+      text-align: center;
+      box-sizing: border-box;
+      line-height: 120px;
+      border-radius: 10px;
+      background-color: white; 
+    }
+
+    .board {
+      width: 360px; 
+    }
+
+    .row {
+      display: flex; 
+    }
+
+    .turn-indicator {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 24px;
+      color: white; 
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+<script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+<script>
+function WordleBoard() {
+  return React.createElement('div', null,
+    React.createElement('h2', null, 'Wordle Board'),
+    React.createElement('div', null, '-----'),
+    React.createElement('div', null, '-----'),
+    React.createElement('div', null, '-----'),
+    React.createElement('div', null, '-----'),
+    React.createElement('div', null, '-----'),
+    React.createElement('div', null, '-----')
+  );
+}
+
+function OnScreenKeyboard() {
+  return React.createElement('div', null,
+    React.createElement('h2', null, 'On-Screen Keyboard'),
+    React.createElement('button', null, 'A'),
+    React.createElement('button', null, 'B'),
+    React.createElement('button', null, 'C'),
+    React.createElement('button', null, 'D'),
+    React.createElement('button', null, 'E'),
+  );
+}
+
+function Results() {
+  const guesses = ['might', 'flood', 'stray'];
+  const answer = 'moody';
+  const results = [];
+
+  guesses.forEach(guess => {
+    let correctLetters = 0;
+    let correctPositions = 0;
+
+    for (let i = 0; i < guess.length; i++) {
+      if (guess[i] === answer[i]) {
+        correctPositions++;
+      } else if (answer.includes(guess[i])) {
+        correctLetters++;
+      }
+    }
+
+    results.push(`${guess}: ${correctPositions} position(s), ${correctLetters} letter(s)`);
+  });
+
+  return React.createElement('div', null,
+    React.createElement('h2', null, 'Results'),
+    results.map((result, index) => React.createElement('p', { key: index }, result))
+  );
+}
+
+const wordleApp = React.createElement('div', null,
+  React.createElement(WordleBoard),
+  React.createElement(OnScreenKeyboard),
+  React.createElement(Results)
+);
+
+ReactDOM.render(wordleApp, document.getElementById('root'));
+</script>
+</body>
+</html>
