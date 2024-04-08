@@ -84,18 +84,16 @@ function WordleBoard() {
     return 'white'; 
   }
 
-  guesses.forEach((guess) => {
-    for (let i = 0; i < guess.length; i++) {
-      squares.push(new Square(guess[i], getColor(guess, i)));
+  for (let i = 0; i < 6; i++) {
+    const guess = guesses[i] || ''; 
+    for (let j = 0; j < 5; j++) {
+      squares.push(new Square(guess[j] || '', getColor(guess, j) || 'white')); 
     }
-  });
+  }
 
   const rows = [];
   for (let i = 0; i < 6; i++) {
-    const row = [];
-    for (let j = 0; j < 5; j++) {
-      row.push(squares[i * 5 + j]);
-    }
+    const row = squares.slice(i * 5, (i + 1) * 5); 
     rows.push(React.createElement('div', { className: 'row', key: i }, row));
   }
 
@@ -157,4 +155,3 @@ ReactDOM.render(wordleApp, document.getElementById('root'));
 </script>
 </body>
 </html>
-
