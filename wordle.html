@@ -12,26 +12,26 @@
       align-items: center;
       height: 100vh;
       margin: 0;
-      padding-top: 50px; /* Add padding to create space in the header area */
+      padding-top: 50px; 
     }
 
     .square {
-      width: 60px; /* Set the width of the squares to half of the original size */
-      height: 60px; /* Set the height of the squares to half of the original size */
+      width: 60px; 
+      height: 60px; 
       margin: 5px;
       border: 1px solid #333;
       display: inline-block;
       vertical-align: top;
-      font-size: 24px; /* Adjust the font size accordingly */
+      font-size: 24px; 
       text-align: center;
       box-sizing: border-box;
       line-height: 60px;
-      border-radius: 5px; /* Adjust the border radius accordingly */
+      border-radius: 5px; 
       background-color: white; 
     }
 
     .board {
-      width: 320px; /* Adjust the width of the board */
+      width: 320px; 
     }
 
     .row {
@@ -45,17 +45,16 @@
       color: white; 
     }
 
-    /* Add some styles for the header */
     header {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       background-color: #333;
-      padding: 10px 0; /* Add padding top and bottom */
+      padding: 10px 0; 
       text-align: center;
       color: white;
-      z-index: 999; /* Ensure the header appears above other elements */
+      z-index: 999; 
     }
   </style>
 </head>
@@ -67,22 +66,30 @@
 <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
 <script>
-// Define the Square component
 function Square(props) {
   return React.createElement('div', { className: 'square', style: { backgroundColor: props.color } }, props.face);
 }
 
-// Define the WordleBoard component
 function WordleBoard() {
-  // Define squares for the board
+  const guesses = ['might', 'flood', 'stray'];
+  const answer = 'moody';
   const squares = [];
-  for (let i = 0; i < 6; i++) {
-    for (let j = 0; j < 5; j++) {
-      squares.push(new Square(''));
+
+  function getColor(guess, index) {
+    if (guess[index] === answer[index]) {
+      return 'green'; 
+    } else if (answer.includes(guess[index])) {
+      return 'yellow'; 
     }
+    return 'white'; 
   }
 
-  // Create rows for the board
+  guesses.forEach((guess) => {
+    for (let i = 0; i < guess.length; i++) {
+      squares.push(new Square(guess[i], getColor(guess, i)));
+    }
+  });
+
   const rows = [];
   for (let i = 0; i < 6; i++) {
     const row = [];
@@ -92,10 +99,9 @@ function WordleBoard() {
     rows.push(React.createElement('div', { className: 'row', key: i }, row));
   }
 
-  return React.createElement('div', { className: 'board' },
-    rows
-  );
+  return React.createElement('div', { className: 'board' }, rows);
 }
+
 function OnScreenKeyboard() {
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
@@ -116,6 +122,7 @@ function OnScreenKeyboard() {
     React.createElement('div', null, ...secondLineButtons) 
   );
 }
+
 function Results() {
   const guesses = ['might', 'flood', 'stray'];
   const answer = 'moody';
@@ -128,12 +135,10 @@ function Results() {
     for (let i = 0; i < guess.length; i++) {
       if (guess[i] === answer[i]) {
         correctPositions++;
-      } else if (answer.includes(guess[i])) {
-        correctLetters++;
       }
     }
 
-    results.push(`${guess}: ${correctPositions} position(s), ${correctLetters} letter(s)`);
+    results.push(`${guess}: ${correctPositions} position(s), ${guess.length - correctPositions} letter(s)`);
   });
 
   return React.createElement('div', null,
